@@ -1,37 +1,30 @@
 import 'package:app/message/bodyMessage.dart';
+import 'package:app/model/chatroommodel.dart';
 import 'package:flutter/material.dart';
 
-class messageScreen extends StatefulWidget {
-  const messageScreen({super.key});
+class messageScreen extends StatelessWidget {
+  final Chatroommodel chat;
+  const messageScreen({super.key, required this.chat});
 
-  @override
-  State<messageScreen> createState() => _messageScreenState();
-}
-
-class _messageScreenState extends State<messageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      backgroundColor: Colors.amber,
-      title: Row(children: [
-        const CircleAvatar(
-          backgroundImage: AssetImage("assets/images/user_2.png"),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text("Nameeeeeee", style: TextStyle(fontSize: 16)),
-            Text("active now", style: TextStyle(fontSize: 14))
-          ],
-        )
-      ]),
-      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.call))],
-    ),
-      body: const bodyMessage(),
+        backgroundColor: Colors.amber,
+        title: Row(children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(chat.chatRoomPicture),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(chat.chatRoomName, style: TextStyle(fontSize: 16))
+        ]),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.call))],
+      ),
+      body: bodyMessage(
+        char: chat,
+      ),
     );
   }
 }

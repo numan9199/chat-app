@@ -1,9 +1,12 @@
-import 'package:app/infosample/Chat.dart';
-import 'package:app/infosample/ChatMessage.dart';
+import 'package:app/connection.dart/Apiservice.dart';
+import 'package:app/model/chatroommodel.dart';
+import 'package:app/model/messagemodel.dart';
+import 'package:app/model/usermodel.dart';
 import 'package:flutter/material.dart';
 
 class bodyMessage extends StatefulWidget {
-  const bodyMessage({super.key});
+  Chatroommodel char;
+  bodyMessage({super.key, required this.char});
 
   @override
   State<bodyMessage> createState() => _bodyMessageState();
@@ -11,6 +14,18 @@ class bodyMessage extends StatefulWidget {
 
 class _bodyMessageState extends State<bodyMessage> {
   TextEditingController _textController = TextEditingController();
+  ApiService service = ApiService();
+  List<Messagemodel> message = [];
+  late Usermodel user;
+  late Chatroommodel chat;
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+    chat = widget.char;
+    user = await service.getUsers();
+    message = await service.getmessage(chat.chatRoomId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +35,11 @@ class _bodyMessageState extends State<bodyMessage> {
             child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
-            itemCount: demeChatMessages.length,
+            itemCount: message.length,
             itemBuilder: (context, index) => Message(
-              message: demeChatMessages[index],
+              message: message[index],
+              user: user,
+              chat: chat,
             ),
           ),
         )),
@@ -54,9 +71,15 @@ class _bodyMessageState extends State<bodyMessage> {
                 onPressed: () {
                   setState(() {
                     if (_textController.text.isNotEmpty) {
-                      ChatMessage input = ChatMessage();
-                      input.text = _textController.text;
-                      demeChatMessages.add(input);
+                      Messagemodel input = Messagemodel(
+                          senderId: user.userId,
+                          receiverId: chat.chatRoomId,
+                          messageType: 'text',
+                          message: _textController.text,
+                          url: '',
+                          isRead: true,
+                          chatRoomId: chat.chatRoomId);
+                      ////send via web socket
                     }
                   });
                   _textController.clear();
@@ -72,11 +95,15 @@ class _bodyMessageState extends State<bodyMessage> {
 }
 
 class Message extends StatelessWidget {
-  Message({
-    super.key,
-    required this.message,
-  });
-  ChatMessage message;
+  Message(
+      {super.key,
+      required this.message,
+      required this.user,
+      required this.chat});
+  Messagemodel message;
+  Usermodel user;
+  Chatroommodel chat;
+
   @override
   Widget build(BuildContext context) {
     // Widget messageContaint(ChatMessage message) {
@@ -86,7 +113,6 @@ class Message extends StatelessWidget {
     //     default:
     //       return SizedBox();
     //   }
-    // }
 
     return SingleChildScrollView(
       child: Column(
@@ -95,45 +121,37 @@ class Message extends StatelessWidget {
             height: 1,
           ),
           Row(
-            mainAxisAlignment: message.isSender
+            mainAxisAlignment: user.userId == message.senderId
                 ? MainAxisAlignment.end
                 : MainAxisAlignment.start,
             children: [
-              if (!message.isSender) ...[
-                const CircleAvatar(
+              if (!(user.userId == message.senderId)) ...[
+                CircleAvatar(
                   radius: 18,
-                  backgroundImage: AssetImage("assets/images/user_3.png"),
+                  backgroundImage: NetworkImage(chat.chatRoomPicture),
                 )
               ],
               const SizedBox(
                 width: 5,
               ),
-              Textmessage(message: message)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Colors.amber
+                        .withOpacity(user.userId == message.senderId ? 1 : 0.5),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  message.message,
+                  style: TextStyle(
+                      color: user.userId == message.senderId
+                          ? Colors.white
+                          : Colors.black),
+                ),
+              )
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class Textmessage extends StatelessWidget {
-  Textmessage({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
-  ChatMessage message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-          color: Colors.amber.withOpacity(message.isSender ? 1 : 0.5),
-          borderRadius: BorderRadius.circular(20)),
-      child: Text(
-        message.text,
-        style: TextStyle(color: message.isSender ? Colors.white : Colors.black),
       ),
     );
   }

@@ -4,32 +4,30 @@
 
 import 'dart:convert';
 
-List<Usermodel> usermodelFromJson(String str) =>
-    List<Usermodel>.from(json.decode(str).map((x) => Usermodel.fromJson(x)));
+Usermodel usermodelFromJson(String str) => Usermodel.fromJson(json.decode(str));
 
-String usermodelToJson(List<Usermodel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String usermodelToJson(Usermodel data) => json.encode(data.toJson());
 
 class Usermodel {
-  Usermodel({
-    this.userId,
-    this.username,
-    this.firstname,
-    this.lastname,
-    this.password,
-    this.email,
-    this.profilePicture,
-  });
+    Usermodel({
+        required this.userId,
+        required this.username,
+        required this.firstname,
+        required this.lastname,
+        required this.password,
+        required this.email,
+        required this.profilePicture,
+    });
 
-  String? userId;
-  String? username;
-  String? firstname;
-  String? lastname;
-  String? password;
-  String? email;
-  String? profilePicture;
+    String userId;
+    String username;
+    String firstname;
+    String lastname;
+    String password;
+    String email;
+    String profilePicture;
 
-  factory Usermodel.fromJson(Map<String, dynamic> json) => Usermodel(
+    factory Usermodel.fromJson(Map<String, dynamic> json) => Usermodel(
         userId: json["user_id"],
         username: json["username"],
         firstname: json["firstname"],
@@ -37,9 +35,9 @@ class Usermodel {
         password: json["password"],
         email: json["email"],
         profilePicture: json["profile_picture"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "user_id": userId,
         "username": username,
         "firstname": firstname,
@@ -47,5 +45,5 @@ class Usermodel {
         "password": password,
         "email": email,
         "profile_picture": profilePicture,
-      };
+    };
 }

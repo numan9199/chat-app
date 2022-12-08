@@ -1,4 +1,4 @@
-import 'package:app/chat/chatroom.dart';
+import 'package:app/chatroom.dart';
 import 'package:flutter/material.dart';
 
 void main() /*async*/ {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: chatroom(),
+      home: Chatroom(),
     );
   }
 }

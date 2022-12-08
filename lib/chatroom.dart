@@ -1,24 +1,39 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, camel_case_types
 
 import 'package:app/chat/body.dart';
+import 'package:app/connection.dart/Apiservice.dart';
 import 'package:app/contact_screen.dart';
+import 'package:app/model/chatroommodel.dart';
+import 'package:app/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:app/setting_screen.dart';
 
-class chatroom extends StatefulWidget {
-  const chatroom({super.key});
+class Chatroom extends StatefulWidget {
+  const Chatroom({super.key});
 
   @override
-  State<chatroom> createState() => _chatroomState();
+  State<Chatroom> createState() => _chatroomState();
 }
 
-class _chatroomState extends State<chatroom> {
+class _chatroomState extends State<Chatroom> {
   int _selectedIndex = 0;
-  final screen = [
-    const body(),
+  ApiService service = ApiService();
+  late Usermodel user;
+  late List<Chatroommodel> chatroom;
+  List screen = [
+    body(chat: chatroom, user: user),
     const ContactScreen(),
     const SettingScreen(),
   ];
+
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+    user = await service.getUsers();
+    chatroom = await service.getchatroom();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,9 +61,7 @@ class _chatroomState extends State<chatroom> {
               label: "profile",
               icon: CircleAvatar(
                 radius: 14,
-                backgroundImage: AssetImage(
-                  "assets/images/user_2.png", //get from user
-                ),
+                backgroundImage: NetworkImage(user.profilePicture),
               ))
         ]);
   }

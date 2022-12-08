@@ -7,23 +7,24 @@ import 'package:app/model/usermodel.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  Future<List<Usermodel>?> getUsers() async {
+  Future<Usermodel> getUsers() async {
     try {
       var url = Uri.parse(ApiConstants.userapi);
       var response = await http.get(url);
       if (response.statusCode == 200) {
-        List<Usermodel> _model = usermodelFromJson(response.body);
+        Usermodel _model = usermodelFromJson(response.body);
         return _model;
       }
     } catch (e) {
       log(e.toString());
     }
+    throw '';
   }
 
-  Future<List<Messagemodel>?> getmessage() async {
+  Future<List<Messagemodel>> getmessage(String id) async {
     try {
       var url = Uri.parse(ApiConstants.messageapi);
-      var response = await http.get(url);
+      var response = await http.post(url, body:{'id': id});
       if (response.statusCode == 200) {
         List<Messagemodel> messageModel = messagemodelFromJson(response.body);
         return messageModel;
@@ -31,9 +32,10 @@ class ApiService {
     } catch (e) {
       log(e.toString());
     }
+    return [];
   }
 
-  Future<List<Chatroommodel>?> getchatroom() async {
+  Future<List<Chatroommodel>> getchatroom() async {
     try {
       var url = Uri.parse(ApiConstants.chatapi);
       var response = await http.get(url);
@@ -44,5 +46,6 @@ class ApiService {
     } catch (e) {
       log(e.toString());
     }
+    return [];
   }
 }

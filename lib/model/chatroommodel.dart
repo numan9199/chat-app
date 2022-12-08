@@ -13,20 +13,20 @@ String chatroommodelToJson(List<Chatroommodel> data) =>
 
 class Chatroommodel {
   Chatroommodel({
-    this.chatRoomId,
-    this.chatRoomName,
-    this.chatRoomType,
-    this.chatRoomPicture,
-    this.member,
-    this.lastmessage,
+    required this.chatRoomId,
+    required this.chatRoomName,
+    required this.chatRoomType,
+    required this.chatRoomPicture,
+    required this.member,
+    required this.lastmessage,
   });
 
-  String? chatRoomId;
-  String? chatRoomName;
-  String? chatRoomType;
-  String? chatRoomPicture;
-  String? member;
-  String? lastmessage;
+  String chatRoomId;
+  String chatRoomName;
+  String chatRoomType;
+  String chatRoomPicture;
+  String member;
+  String lastmessage;
 
   factory Chatroommodel.fromJson(Map<String, dynamic> json) => Chatroommodel(
         chatRoomId: json["chatRoomId"],

@@ -4,35 +4,31 @@
 
 import 'dart:convert';
 
-List<Messagemodel> messagemodelFromJson(String str) =>
-    List<Messagemodel>.from(json.decode(str).map((x) => Messagemodel.fromJson(x)));
+List<Messagemodel> messagemodelFromJson(String str) => List<Messagemodel>.from(
+    json.decode(str).map((x) => Messagemodel.fromJson(x)));
 
 String messagemodelToJson(List<Messagemodel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Messagemodel {
-    Messagemodel({
-        this.messageId,
-        this.senderId,
-        this.receiverId,
-        this.messageType,
-        this.message,
-        this.url,
-        this.isRead,
-        this.chatRoomId,
-    });
+  Messagemodel({
+    required this.senderId,
+    required this.receiverId,
+    required this.messageType,
+    required this.message,
+    required this.url,
+    required this.isRead,
+    required this.chatRoomId,
+  });
+  String senderId;
+  String receiverId;
+  String messageType;
+  String message;
+  String url;
+  bool isRead;
+  String chatRoomId;
 
-    String? messageId;
-    String? senderId;
-    String? receiverId;
-    String? messageType;
-    String? message;
-    String? url;
-    bool? isRead;
-    String? chatRoomId;
-
-    factory Messagemodel.fromJson(Map<String, dynamic> json) => Messagemodel(
-        messageId: json["message_id"],
+  factory Messagemodel.fromJson(Map<String, dynamic> json) => Messagemodel(
         senderId: json["sender_id"],
         receiverId: json["receiver_id"],
         messageType: json["message_type"],
@@ -40,10 +36,9 @@ class Messagemodel {
         url: json["url"],
         isRead: json["is_read"],
         chatRoomId: json["chat_room_id"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
-        "message_id": messageId,
+  Map<String, dynamic> toJson() => {
         "sender_id": senderId,
         "receiver_id": receiverId,
         "message_type": messageType,
@@ -51,5 +46,5 @@ class Messagemodel {
         "url": url,
         "is_read": isRead,
         "chat_room_id": chatRoomId,
-    };
+      };
 }
