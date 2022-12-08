@@ -1,4 +1,4 @@
-import 'package:app/chatroom.dart';
+import 'package:app/chatroom_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() /*async*/ {
