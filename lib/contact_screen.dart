@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.bottomCenter, children: [

@@ -18,6 +18,7 @@ class _bodyMessageState extends State<bodyMessage> {
   List<Messagemodel> message = [];
   late Usermodel user;
   late Chatroommodel chat;
+
   @override
   void initState() async {
     // TODO: implement initState

@@ -18,8 +18,8 @@ class Chatroom extends StatefulWidget {
 class _chatroomState extends State<Chatroom> {
   int _selectedIndex = 0;
   ApiService service = ApiService();
-  late Usermodel user;
-  late List<Chatroommodel> chatroom;
+  static late Usermodel user;
+  static late List<Chatroommodel> chatroom;
   List screen = [
     body(chat: chatroom, user: user),
     const ContactScreen(),
